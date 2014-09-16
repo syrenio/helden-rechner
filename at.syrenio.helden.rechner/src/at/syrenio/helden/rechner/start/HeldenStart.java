@@ -1,4 +1,4 @@
-package at.syrenio.helden.rechner;
+package at.syrenio.helden.rechner.start;
 
 import helden.plugin.HeldenWertePlugin3;
 import helden.plugin.datenxmlplugin.DatenAustauschImpl;
@@ -9,6 +9,8 @@ import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+
+import at.syrenio.helden.rechner.HeldenCalc;
 
 public class HeldenStart implements HeldenWertePlugin3 {
 

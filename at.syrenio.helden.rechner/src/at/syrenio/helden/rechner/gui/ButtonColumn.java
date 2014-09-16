@@ -1,4 +1,4 @@
-package at.syrenio.helden.rechner;
+package at.syrenio.helden.rechner.gui;
 
 import java.awt.Color;
 import java.awt.Component;

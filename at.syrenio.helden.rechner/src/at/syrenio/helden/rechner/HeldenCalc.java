@@ -19,6 +19,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 
+import at.syrenio.helden.rechner.gui.ButtonColumn;
+import at.syrenio.helden.rechner.gui.RechnerTableModel;
+import at.syrenio.helden.rechner.gui.TalentDTO;
+
 public class HeldenCalc {
 
 	private JPanel panel;
@@ -57,17 +61,19 @@ public class HeldenCalc {
 				JTable t = (JTable) e.getSource();
 				int modelRow = Integer.valueOf(e.getActionCommand());
 				RechnerTableModel dm = (RechnerTableModel) t.getModel();
-				RechnerRowData row = dm.getRow(modelRow);
+				TalentDTO row = dm.getRow(modelRow);
 				int rechenWert = calcTalent(row.Talent);
-				dm.setValueAt(rechenWert, modelRow, 4);
-				dm.fireChange(modelRow, 4);
+				row.Endwert = rechenWert;
+				// dm.fireChange(row, col);
+				// dm.setValueAt(rechenWert, modelRow, 5);
+				// dm.fireChange(modelRow, 5);
 				table.revalidate();
 				table.repaint();
 
 				System.out.println("recalc wert " + rechenWert);
 			}
 		};
-		ButtonColumn btn = new ButtonColumn(table, recalc, 3);
+		ButtonColumn btn = new ButtonColumn(table, recalc, 4);
 
 		dialog.getContentPane().add(scrollPane);
 	}
@@ -79,9 +85,9 @@ public class HeldenCalc {
 		createLayout(frame);
 
 		StringBuilder sb = new StringBuilder();
-		List<RechnerRowData> data = new ArrayList<RechnerRowData>();
+		List<TalentDTO> data = new ArrayList<TalentDTO>();
 		for (int i = 0; i < phww.getTalenteAlsString().length; i++) {
-			RechnerRowData row = new RechnerRowData();
+			TalentDTO row = new TalentDTO();
 
 			String str = phww.getTalenteAlsString()[i];
 			PluginTalent talent = phww.getTalent(str);
@@ -91,6 +97,7 @@ public class HeldenCalc {
 			int rechenWert = calcTalent(talent);
 
 			row.TalentName = str;
+			row.TalentArt = talent.getTalentart();
 			row.Probe = probeAsText(probe);
 			row.Wert = talentWert;
 			row.Action = "würfeln";
@@ -98,20 +105,16 @@ public class HeldenCalc {
 			row.Talent = talent;
 			data.add(row);
 
-			sb.append(str + "[");
-			sb.append(probeAsText(probe));
-			sb.append("]:");
-			sb.append(talentWert);
-			sb.append("\t--->\t");
-			sb.append(rechenWert);
-			sb.append("\n");
+			sb.append(row.toString());
 
 		}
 
-		java.util.Collections.sort(data, new Comparator<RechnerRowData>() {
+		java.util.Collections.sort(data, new Comparator<TalentDTO>() {
 
 			@Override
-			public int compare(RechnerRowData a, RechnerRowData b) {
+			public int compare(TalentDTO a, TalentDTO b) {
+				if (!a.TalentArt.equals(b.TalentArt))
+					return a.TalentArt.compareTo(b.TalentArt);
 				return a.TalentName.compareTo(b.TalentName);
 			}
 		});

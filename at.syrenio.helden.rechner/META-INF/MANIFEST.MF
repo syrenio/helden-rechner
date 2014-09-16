@@ -1,3 +1,3 @@
 Manifest-Version: 1.0
-HeldenPluginClass: at.syrenio.helden.rechner.HeldenStart.class
+HeldenPluginClass: at.syrenio.helden.rechner.start.HeldenStart.class
 Main-Class: at.syrenio.helden.rechner.HeldenCalc
